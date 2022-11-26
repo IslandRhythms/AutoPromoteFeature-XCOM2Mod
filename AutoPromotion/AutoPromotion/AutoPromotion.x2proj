@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Guid>955e3628-f027-4326-b221-554aa6fbed3e</Guid>
+    <Name>AutoPromotion</Name>
+    <Description>Auto Promotes troops when they are eligible for promotion. You can set progression you want your troops to follow in the config files.
+
+tags= War Of The Chosen, UI, Gameplay</Description>
+    <SteamPublishID>0</SteamPublishID>
+    <AssemblyName>AutoPromotion</AssemblyName>
+    <RootNamespace>AutoPromotion</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
+    <Folder Include="Localization\" />
+    <Folder Include="Src\" />
+    <Folder Include="Src\AutoPromotion\" />
+    <Folder Include="Src\AutoPromotion\Classes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\XComGameData.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ReadMe.txt" />
+    <Content Include="ModPreview.jpg" />
+    <Content Include="Config\XComEditor.ini" />
+    <Content Include="Config\XComEngine.ini" />
+    <Content Include="Config\XComGame.ini" />
+    <Content Include="Localization\XComGame.int" />
+    <Content Include="Src\AutoPromotion\Classes\AutoPromote.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\AutoPromotion\Classes\X2DownloadableContentInfo_AutoPromotion.uc" />
+  </ItemGroup>
+  <Import Project="$(MSBuildLocalExtensionPath)\XCOM2.targets" />
+</Project>
