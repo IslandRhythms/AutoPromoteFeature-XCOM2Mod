@@ -9,6 +9,7 @@ tags= War Of The Chosen, UI, Gameplay</Description>
     <SteamPublishID>0</SteamPublishID>
     <AssemblyName>AutoPromotion</AssemblyName>
     <RootNamespace>AutoPromotion</RootNamespace>
+    <ProjectGuid>{65308832-fd88-48c6-b123-e1222328cafb}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Config\" />
