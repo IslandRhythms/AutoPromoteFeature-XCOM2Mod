@@ -22,7 +22,7 @@ var config bool bUseClassIfNoMatchedName, bShowRankedUpPopups;
 static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 {
 	local name soldierType;
-	local string soldierName;
+	local string soldierFullName;
 	local int Index, iRank, iBranch;
 	local bool bIsLogged;
 	
