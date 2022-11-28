@@ -26,12 +26,14 @@ tags= War Of The Chosen, UI, Gameplay</Description>
     <Content Include="Config\XComGameData.ini">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Localization\AutoPromotion.int">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="ReadMe.txt" />
     <Content Include="ModPreview.jpg" />
     <Content Include="Config\XComEditor.ini" />
     <Content Include="Config\XComEngine.ini" />
     <Content Include="Config\XComGame.ini" />
-    <Content Include="Localization\XComGame.int" />
     <Content Include="Src\AutoPromotion\Classes\AutoPromote.uc">
       <SubType>Content</SubType>
     </Content>
