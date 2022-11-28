@@ -5,9 +5,6 @@
 class X2DownloadableContentInfo_AutoPromotion extends X2DownloadableContentInfo;
 
 var config(Game) bool bEnableLogging;
-var config(AutoPromotion_DEFAULT) int VERSION_CFG;
-var config(AutoPromotion_DEFAULT) bool ONLYSQUADDIES;
-`include(AutoPromotion/Src/ModConfigMenuAPI/MCM_API_Includes.uci)
 `include(AutoPromotion/Src/ModConfigMenuAPI/MCM_API_CfgHelpers.uci)
 
 static event OnLoadedSavedGame(){}
@@ -49,7 +46,7 @@ static event onPostMission()
 		
 			`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", default.bEnableLogging, 'Beat_AutoPromote');
 		
-			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier() && Unit.GetSoldierRank == 0)
+			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier() && Unit.GetSoldierRank() == 0)
 			{
 				// if they have no abilities marked, default to the config files.
 				`LOG("This Unit is eligible to Promote, start process", default.bEnableLogging, 'Beat_AutoPromote');

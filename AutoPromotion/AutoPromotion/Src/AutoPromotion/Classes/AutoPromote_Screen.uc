@@ -34,8 +34,6 @@ simulated function ClientModCallback(MCM_API_Instance ConfigAPI, int GameMode)
 {
 	local MCM_API_SettingsPage	Page;
 	local MCM_API_SettingsGroup Group;
-	local string SlotLocName;
-	local int i;
 
 	// This part is always the same, just copy it around.
 	LoadSavedSettings();
