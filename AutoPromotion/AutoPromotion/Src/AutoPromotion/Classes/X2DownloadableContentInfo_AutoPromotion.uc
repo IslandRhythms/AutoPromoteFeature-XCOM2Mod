@@ -4,7 +4,11 @@
 
 class X2DownloadableContentInfo_AutoPromotion extends X2DownloadableContentInfo;
 
-var bool bEnableLogging;
+var config(Game) bool bEnableLogging;
+var config(AutoPromotion_DEFAULT) int VERSION_CFG;
+var config(AutoPromotion_DEFAULT) bool ONLYSQUADDIES;
+`include(AutoPromotion/Src/ModConfigMenuAPI/MCM_API_Includes.uci)
+`include(AutoPromotion/Src/ModConfigMenuAPI/MCM_API_CfgHelpers.uci)
 
 static event OnLoadedSavedGame(){}
 static event InstallNewCampaign(XComGameState StartState){}
@@ -37,20 +41,37 @@ static event onPostMission()
 
 	`LOG("Checking values that could be used to determine eligibility promotion", default.bEnableLogging, 'Beat_AutoPromote');
 	`LOG("ObjectIDs of the entire roster", default.bEnableLogging, 'Beat_AutoPromote');
-	
+	if (`GETMCMVAR(ONLYSQUADDIES)) {
 	for (i = 0; i < XCOMHQ.Crew.Length; i++)
-	{
-		// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
-		Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', XCOMHQ.Crew[i].ObjectID));
-		
-		`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", default.bEnableLogging, 'Beat_AutoPromote');
-		
-		if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
 		{
-			// if they have no abilities marked, default to the config files.
-			`LOG("This Unit is eligible to Promote, start process", default.bEnableLogging, 'Beat_AutoPromote');
+			// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
+			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', XCOMHQ.Crew[i].ObjectID));
+		
+			`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", default.bEnableLogging, 'Beat_AutoPromote');
+		
+			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier() && Unit.GetSoldierRank == 0)
+			{
+				// if they have no abilities marked, default to the config files.
+				`LOG("This Unit is eligible to Promote, start process", default.bEnableLogging, 'Beat_AutoPromote');
 			
-			class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+				class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+			}
+		}
+	} else {
+		for (i = 0; i < XCOMHQ.Crew.Length; i++)
+		{
+			// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
+			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', XCOMHQ.Crew[i].ObjectID));
+		
+			`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", default.bEnableLogging, 'Beat_AutoPromote');
+		
+			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
+			{
+				// if they have no abilities marked, default to the config files.
+				`LOG("This Unit is eligible to Promote, start process", default.bEnableLogging, 'Beat_AutoPromote');
+			
+				class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+			}
 		}
 	}
 

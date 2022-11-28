@@ -2,7 +2,9 @@
 
 class AutoPromote extends X2DownloadableContentInfo config(GameData);
 
-struct SoldierTypes
+var config(AutoPromotion_DEFAULT) int VERSION_CFG;
+
+struct AutoPromote_SoldierTypes
 {
 	var name soldierClass;
 	var string soldierName;
@@ -16,8 +18,11 @@ struct SoldierTypes
 	var int brigadier;
 };
 
-var config array<SoldierTypes> AutoPromotePresets;
+var config array<AutoPromote_SoldierTypes> AutoPromotePresets;
 var config bool bUseClassIfNoMatchedName, bShowRankedUpPopups;
+
+`include(AutoPromotion/Src/ModConfigMenuAPI/MCM_API_Includes.uci)
+`include(AutoPromotion/Src/ModConfigMenuAPI/MCM_API_CfgHelpers.uci)
 
 static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 {
@@ -99,3 +104,4 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 	`LOG("COMPLETED AUTO-PROMOTION", bIsLogged, 'Beat_AutoPromote');
 
 }
+
