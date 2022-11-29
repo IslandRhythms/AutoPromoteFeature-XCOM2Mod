@@ -51,7 +51,7 @@ simulated function ClientModCallback(MCM_API_Instance ConfigAPI, int GameMode)
     
     // Here you create your MCM settings. One line per MCM var.
 	
-	`MCM_API_AutoAddCheckBox(Group, ONLYSQUADDIES);	
+	`MCM_API_AutoAddCheckBox(Group, ONLYSQUADDIES);	// false by default
 
 	// This will display your created page.
 	Page.ShowSettings();
