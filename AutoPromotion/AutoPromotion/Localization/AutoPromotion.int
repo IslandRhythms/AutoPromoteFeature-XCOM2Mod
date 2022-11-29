@@ -1,0 +1,8 @@
+;Place localized text in this file
+[AutoPromote_Screen]
+ModName="AutoPromotion"
+PageTitle="Auto Promote"
+GroupHeader="Auto Promote Settings"
+
+ONLYSQUADDIES_Label="Enable Only Squaddies"
+ONLYSQUADDIES_Tip="Click to enable only promoting troops to rank squaddie"
