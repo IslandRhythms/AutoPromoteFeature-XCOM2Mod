@@ -28,7 +28,7 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 	local name soldierType;
 	local string soldierFullName;
 	local int Index, iRank, iBranch;
-	local bool bIsLogged, bUseClassIfNoMatchedName, bShowRankedUpPopups;
+	local bool bIsLogged, bUseClassIfNoMatchedName, bShowRankedUpPopups, bOnlySquaddies;
 	
 	soldierType = Unit.GetSoldierClassTemplateName();
 	soldierFullName = Unit.GetFullName();
@@ -39,6 +39,11 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 	bIsLogged = `GETMCMVAR(ENABLELOGGING);
 	bUseClassIfNoMatchedName = `GETMCMVAR(USENAME);
 	bShowRankedUpPopups = `GETMCMVAR(SHOWPROMOTIONPOPUP);
+	bOnlySquaddies = `GETMCMVAR(ONLYSQUADDIES);
+	`LOG("what is bIsLogged"@bIsLogged, bIsLogged, 'Beat_AutoPromote');
+	`LOG("what is bUseClassIfNoMatchedName"@bUseClassIfNoMatchedName, bIsLogged, 'Beat_AutoPromote');
+	`LOG("what is bShowRankedUpPopups"@bShowRankedUpPopups, bIsLogged, 'Beat_AutoPromote');
+	`Log("what is bOnlySquaddies"@bOnlySquaddies, bIsLogged, 'Beat_AutoPromote');
 
 	//not a named unit, so go by class
 	if (Index == INDEX_NONE && bUseClassIfNoMatchedName)

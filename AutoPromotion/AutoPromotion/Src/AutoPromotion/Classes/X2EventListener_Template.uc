@@ -17,7 +17,7 @@ static function X2EventListenerTemplate AutoPromote_CreateListener_CovertActionC
 {
 	local CHEventListenerTemplate Template;
 
-	`CREATE_X2TEMPLATE(class'CHEventListenerTemplate', Template, 'CovertActionCompleted');
+	`CREATE_X2TEMPLATE(class'CHEventListenerTemplate', Template, 'AutoPromote_CovertActionCompleted');
 
 	Template.RegisterInTactical = false;	//listen during missions
 	Template.RegisterInStrategy = true;		//listen during avenger
@@ -41,9 +41,11 @@ static function EventListenerReturn CheckForAvailablePromotions(Object EventData
 	local bool bEnableLogging;
 
     CovAct = XComGameState_CovertAction(EventSource);
-
+	`LOG("is the event listener even firing?");
     if (CovAct != none)
     {
+		`LOG("======================", bEnableLogging, 'Beat_AutoPromote');
+		`LOG("Inside the event listener", bEnableLogging, 'Beat_AutoPromote');
 		History = `XCOMHISTORY;
 		Container = class 'XComGameStateContext_ChangeContainer'.static.CreateEmptyChangeContainer("Soldier Auto-Promotion");
 		UpdateState = History.CreateNewGameState(true, Container);
