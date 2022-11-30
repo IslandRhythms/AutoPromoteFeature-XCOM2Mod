@@ -6,3 +6,13 @@ GroupHeader="Auto Promote Settings"
 
 ONLYSQUADDIES_Label="Enable Only Squaddies"
 ONLYSQUADDIES_Tip="Click to enable only promoting troops to rank squaddie"
+
+ENABLELOGGING_Label="Enable Logging"
+ENABLELOGGING_Tip="Click to enable logging if you are attempting to debug or find a specific class's internal name"
+
+SHOWPROMOTIONPOPUP_Label="Enable Promotion Popup"
+SHOWPROMOTIONPOPUP_Tip="Click to enable showing the promotion popup when your troop is ready to promote"
+
+USENAME_Label="Enable Using Soldier name in addition to Soldier class"
+USENAME_Tip="Click to enable using the trooper's name before using the class. This is good if you want specific troops to follow a certain progression."
+

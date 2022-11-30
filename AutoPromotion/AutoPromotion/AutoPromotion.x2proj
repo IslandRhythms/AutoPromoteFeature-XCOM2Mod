@@ -47,6 +47,9 @@ tags= War Of The Chosen, UI, Gameplay</Description>
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\AutoPromotion\Classes\X2DownloadableContentInfo_AutoPromotion.uc" />
+    <Content Include="Src\AutoPromotion\Classes\X2EventListener_Template.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API.uc">
       <SubType>Content</SubType>
     </Content>
