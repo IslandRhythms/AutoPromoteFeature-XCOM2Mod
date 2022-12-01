@@ -88,7 +88,7 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 	else if (soldierType == 'Rookie')
 	{
 		Unit.RankUpSoldier(UpdateState);
-		Unit.ApplyInventoryLoadout(UpdateState);				// solider was promoted to squaddie, but kept rookie loadlout. Must fix with this.
+		Unit.ApplySquaddieLoadout(UpdateState);				// solider was promoted to squaddie, but kept rookie loadlout. Must fix with this.
 		Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
 		Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
 
