@@ -6,3 +6,5 @@ var config bool ONLYSQUADDIES;
 var config bool ENABLELOGGING;
 var config bool SHOWPROMOTIONPOPUP;
 var config bool USENAME;
+var config bool IGNORECA;
+var config bool RANKNOBUY;

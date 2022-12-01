@@ -16,3 +16,9 @@ SHOWPROMOTIONPOPUP_Tip="Click to enable showing the promotion popup when your tr
 USENAME_Label="Enable Using Soldier name in addition to Soldier class"
 USENAME_Tip="Click to enable using the trooper's name before using the class. This is good if you want specific troops to follow a certain progression."
 
+IGNORECA_Label="Enable Ignoring Covert Actions"
+IGNORECA_Tip="Click to enable not promoting the units that became eligible for promoting from a covert action"
+
+RANKNOBUY_Label="Enable Ranking Up But Not Buying Abilities"
+RANKNOBUY_Tip="Click to enable ranking the unit up to the next rank (ex: squaddie to corporal) but not buying the ability"
+

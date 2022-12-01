@@ -41,7 +41,7 @@ static function EventListenerReturn CheckForAvailablePromotions(Object EventData
 	local bool bEnableLogging;
 
     CovAct = XComGameState_CovertAction(EventSource);
-	`LOG("is the event listener even firing?");
+	`LOG("Value of ini value IGNORECA. This value is flipped with !"$`GETMCMVAR(IGNORECA), bEnableLogging, 'Beat_AutoPromote');
     if (CovAct != none)
     {
 		`LOG("======================", bEnableLogging, 'Beat_AutoPromote');
@@ -54,6 +54,10 @@ static function EventListenerReturn CheckForAvailablePromotions(Object EventData
 		for (i = 0; i < CovAct.StaffSlots.Length; i++) {
 			SlotState = CovAct.GetStaffSlot(i);
 			Unit = SlotState.GetAssignedStaff();
+			if(`GETMCMVAR(IGNORECA)) {
+				Unit.bNeedsNewClassPopup = `GETMCMVAR(SHOWPROMOTIONPOPUP);
+				continue;
+			}
 			if(`GETMCMVAR(ONLYSQUADDIES)) {
 				if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier() && Unit.GetSoldierRank() == 0) {
 					`LOG("This Unit is eligible to Promote and is a rookie, start process", bEnableLogging, 'Beat_AutoPromote');

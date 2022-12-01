@@ -16,6 +16,8 @@ var localized string GroupHeader;
 `MCM_API_AutoCheckBoxVars(ENABLELOGGING);
 `MCM_API_AutoCheckBoxVars(SHOWPROMOTIONPOPUP);
 `MCM_API_AutoCheckBoxVars(USENAME);
+`MCM_API_AutoCheckBoxVars(IGNORECA);
+`MCM_API_AutoCheckBoxVars(RANKNOBUY);
 `include(AutoPromotion\Src\ModConfigMenuAPI\MCM_API_CfgHelpers.uci)
 
 
@@ -29,6 +31,8 @@ var localized string GroupHeader;
 `MCM_API_AutoCheckBoxFns(ENABLELOGGING, 1);
 `MCM_API_AutoCheckBoxFns(SHOWPROMOTIONPOPUP, 1);
 `MCM_API_AutoCheckBoxFns(USENAME, 1);
+`MCM_API_AutoCheckBoxFns(IGNORECA, 1);
+`MCM_API_AutoCheckBoxFns(RANKNOBUY, 1);
 
 event OnInit(UIScreen Screen)
 {
@@ -61,6 +65,8 @@ simulated function ClientModCallback(MCM_API_Instance ConfigAPI, int GameMode)
 	`MCM_API_AutoAddCheckBox(Group, USENAME); // true by default
 	`MCM_API_AutoAddCheckBox(Group, SHOWPROMOTIONPOPUP); // false by default
 	`MCM_API_AutoAddCheckBox(Group, ENABLELOGGING); // false by default
+	`MCM_API_AutoAddCheckBox(Group, IGNORECA); // false by default
+	`MCM_API_AutoAddCheckBox(Group, RANKNOBUY); // false by default
 
 	// This will display your created page.
 	Page.ShowSettings();
@@ -73,6 +79,8 @@ simulated function LoadSavedSettings()
 	ENABLELOGGING = `GETMCMVAR(ENABLELOGGING);
 	USENAME = `GETMCMVAR(USENAME);
 	SHOWPROMOTIONPOPUP = `GETMCMVAR(SHOWPROMOTIONPOPUP);
+	IGNORECA = `GETMCMVAR(IGNORECA);
+	RANKNOBUY = `GETMCMVAR(RANKNOBUY);
 }
 
 // Same. Note: required only if you actually called EnableResetButton() earlier.
@@ -82,6 +90,8 @@ simulated function ResetButtonClicked(MCM_API_SettingsPage Page)
 	`MCM_API_AutoReset(ENABLELOGGING);
 	`MCM_API_AutoReset(USENAME);
 	`MCM_API_AutoReset(SHOWPROMOTIONPOPUP);
+	`MCM_API_AutoReset(IGNORECA);
+	`MCM_API_AutoReset(RANKNOBUY);
 }
 
 // Copy this around.
