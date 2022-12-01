@@ -9,7 +9,7 @@ if you would like to add a custom class you made or a custom class you use, you 
 Simply [url=https://github.com/IslandRhythms/AutoPromoteFeature-XCOM2Mod] Click here[/url] to go the repository, and go to the XComGameData.ini file and add your changes.
 
 
-[h1]New Features and Fixes with update released on 12/01/2022[/h1]
+[h1]New Features and Fixes with update released on 11/30/2022[/h1]
 
 The following has been fixed:
 [list]
