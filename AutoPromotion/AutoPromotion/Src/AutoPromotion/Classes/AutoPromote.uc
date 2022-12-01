@@ -77,8 +77,9 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 				iBranch = default.AutoPromotePresets[Index].squaddie;
 				break;
 		}
-
-		Unit.BuySoldierProgressionAbility(UpdateState, iRank, iBranch);
+		if (!`GETMCMVAR(RANKNOBUY)) {
+			Unit.BuySoldierProgressionAbility(UpdateState, iRank, iBranch);
+		}
 		Unit.RankUpSoldier(UpdateState);
 		Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
 		Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
