@@ -28,7 +28,7 @@ Due to demand, the Mod Config Menu has been integrated to enable a more customiz
 [*] Show Promotion Popup => When a soldier is eligible for promotion, a pop up occurs. You can disable/enable this. This is disabled by default.
 [*] Ignore Covert Action => Enable to not autopromte soldiers on covert actions. If you have Show Promotion Popup enabled, it will still execute.
 [*] Rank up but not buy ability => Rank the soldier up to the next available rank (ex: squaddie to corporal) but do not buy the ability. disabled by default.
-[*] Use Soldier Full Name => Enable to allow using the soldier's name instead of class name. So John Doe instead of Specialist. Enabled by default. Credit to RustyDios.
+[*] Use Soldier Full Name => Enable to allow using the soldier's name as well as the class name. So if John Doe is no found, it will default to the class the trooper is. Enabled by default. Credit to RustyDios.
 [/list]
 
 [h2] Code Improvement, Logging Improvement, LWOTC Support, Using The Soldier's Name, as well as the new image can be attributed to Rusty Dios. Thanks Rusty.[/h2]
