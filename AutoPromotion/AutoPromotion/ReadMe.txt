@@ -20,7 +20,7 @@ The following has been fixed:
 [hr][/hr]
 The following has been implemented upon user request/user aid
 
-[h3]Mod Config Menu Integrtion[/h3]
+[h3]Mod Config Menu Integration[/h3]
 Due to demand, the Mod Config Menu has been integrated to enable a more customized auto promoting experience.
 [list]
 [*] Enable OnlySquaddies => Enable to make it so that it will only auto promote to rank squaddie. disabled by default
@@ -31,7 +31,7 @@ Due to demand, the Mod Config Menu has been integrated to enable a more customiz
 [*] Use Soldier Full Name => Enable to allow using the soldier's name instead of class name. So John Doe instead of Specialist. Enabled by default. Credit to RustyDios.
 [/list]
 
-[h2] Code Improvement, Logging Improvement, LWOTC Support, Using The Soldier's Name, as well as the new image can be attributed to Rusty Dios. Thanks Rusty.[h2]
+[h2] Code Improvement, Logging Improvement, LWOTC Support, Using The Soldier's Name, as well as the new image can be attributed to Rusty Dios. Thanks Rusty.[/h2]
 
 [h3] How to find the Soldier's Internal Class Name or Full Name [/h3]
 Make sure that you have logging enabled, otherwise you will not see the logs!
