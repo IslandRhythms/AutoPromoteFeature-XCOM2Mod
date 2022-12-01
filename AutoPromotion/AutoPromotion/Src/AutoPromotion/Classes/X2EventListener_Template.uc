@@ -41,8 +41,8 @@ static function EventListenerReturn CheckForAvailablePromotions(Object EventData
 	local bool bEnableLogging;
 
     CovAct = XComGameState_CovertAction(EventSource);
-	`LOG("is the event listener even firing?");
-    if (CovAct != none)
+	`LOG("Value of ini value IGNORECA. This value is flipped with !"$`GETMCMVAR(IGNORECA), bEnableLogging, 'Beat_AutoPromote');
+    if (CovAct != none && !`GETMCMVAR(IGNORECA))
     {
 		`LOG("======================", bEnableLogging, 'Beat_AutoPromote');
 		`LOG("Inside the event listener", bEnableLogging, 'Beat_AutoPromote');
