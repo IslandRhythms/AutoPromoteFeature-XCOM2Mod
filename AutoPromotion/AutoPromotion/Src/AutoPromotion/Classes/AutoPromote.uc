@@ -29,6 +29,7 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 	local string soldierFullName;
 	local int Index, iRank, iBranch;
 	local bool bIsLogged, bUseClassIfNoMatchedName, bShowRankedUpPopups, bOnlySquaddies;
+	local XComGameState_HeadquartersXCom XHQ;
 	
 	soldierType = Unit.GetSoldierClassTemplateName();
 	soldierFullName = Unit.GetFullName();
@@ -89,7 +90,8 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 	else if (soldierType == 'Rookie')
 	{
 		Unit.RankUpSoldier(UpdateState);
-		Unit.ApplySquaddieLoadout(UpdateState);				// solider was promoted to squaddie, but kept rookie loadlout. Must fix with this.
+		XHQ = XComGameState_HeadquartersXCom(UpdateState.ModifyStateObject(class 'XComGameState_HeadquartersXCom', `XCOMHQ.ObjectID));
+		Unit.ApplySquaddieLoadout(UpdateState, XHQ);				// solider was promoted to squaddie, but kept rookie loadlout. Must fix with this.
 		Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
 		Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
 
