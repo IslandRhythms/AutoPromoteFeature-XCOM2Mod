@@ -8,6 +8,33 @@ class X2DownloadableContentInfo_AutoPromotion extends X2DownloadableContentInfo;
 static event OnLoadedSavedGame(){}
 static event InstallNewCampaign(XComGameState StartState){}
 
+exec function PromoteAllSoldiers() {
+	local int i;
+	local XComGameStateContext_ChangeContainer Container;
+	local XComGameState UpdateState;
+	local XComGameState_Unit Unit;
+
+	Container = class 'XComGameStateContext_ChangeContainer'.static.CreateEmptyChangeContainer("Soldier Auto-Promotion");
+	UpdateState = History.CreateNewGameState(true, Container);
+	for (i = 0; i < XCOMHQ.Crew.Length; i++)
+		{
+			// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
+			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', XCOMHQ.Crew[i].ObjectID));
+		
+			`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
+		
+			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
+			{
+				// if they have no abilities marked, default to the config files.
+				`LOG("This Unit is eligible to Promote, start process", bEnableLogging, 'Beat_AutoPromote');
+			
+				class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+			}
+		}
+
+		`GAMERULES.SubmitGameState(UpdateState);
+}
+
 static event onPostMission()
 {
 	local StateObjectReference UnitRef;
