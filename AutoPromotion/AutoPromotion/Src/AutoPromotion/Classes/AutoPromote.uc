@@ -162,6 +162,7 @@ static function autoPromoteConsoleCommand(XComGameState_Unit Unit, XComGameState
 			}
 		Unit.BuySoldierProgressionAbility(UpdateState, i, iBranch); // i instead of iRank
 		// Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
+		// Unit.bRankedUp in this case can remain unassigned as the LevelUpBarracks command did everything but run BuySoldierProgression
 		// Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
 	}
 
