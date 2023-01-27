@@ -15,24 +15,39 @@ exec function PromoteAllSoldiers() {
 	local XComGameState_Unit Unit;
 
 	Container = class 'XComGameStateContext_ChangeContainer'.static.CreateEmptyChangeContainer("Soldier Auto-Promotion");
-	UpdateState = History.CreateNewGameState(true, Container);
-	for (i = 0; i < XCOMHQ.Crew.Length; i++)
+	UpdateState = `XCOMHISTORY.CreateNewGameState(true, Container);
+	for (i = 0; i < `XCOMHQ.Crew.Length; i++)
 		{
 			// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
-			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', XCOMHQ.Crew[i].ObjectID));
-		
-			`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
+			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', `XCOMHQ.Crew[i].ObjectID));
+
 		
 			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
 			{
 				// if they have no abilities marked, default to the config files.
-				`LOG("This Unit is eligible to Promote, start process", bEnableLogging, 'Beat_AutoPromote');
 			
 				class'AutoPromote'.static.autoPromote(Unit, UpdateState);
 			}
 		}
 
 		`GAMERULES.SubmitGameState(UpdateState);
+}
+
+exec function ListSoldierAbility(string soldierName, int rank, int branch) {
+	local XComGameState_Unit Unit;
+	local int i;
+	local string fullName;
+	local name ability;
+	`log("soldierName"@soldierName);
+	for (i = 0; i < `XCOMHQ.Crew.Length; i++) {
+		Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(`XCOMHQ.Crew[i].ObjectID));
+		fullName = Unit.GetFullName();
+		if(fullName == soldierName) {
+			ability = Unit.GetAbilityName(rank, branch);
+			`log("The ability at the given rank and branch is"@ability);
+		}
+	}
+
 }
 
 static event onPostMission()
