@@ -13,6 +13,7 @@ var localized string GroupHeader;
 // Here you add AutoVars macros. Look in .uci MCM files to see what other things you can add.
 
 `MCM_API_AutoCheckBoxVars(ONLYSQUADDIES);
+`MCM_API_AutoCheckBoxVars(ONLYVETS);
 `MCM_API_AutoCheckBoxVars(ENABLELOGGING);
 `MCM_API_AutoCheckBoxVars(SHOWPROMOTIONPOPUP);
 `MCM_API_AutoCheckBoxVars(USENAME);
@@ -28,6 +29,7 @@ var localized string GroupHeader;
 // One AutoVars and one AutoFns line is required for each MCM var.
 
 `MCM_API_AutoCheckBoxFns(ONLYSQUADDIES, 1);
+`MCM_API_AutoCheckBoxFns(ONLYVETS, 1);
 `MCM_API_AutoCheckBoxFns(ENABLELOGGING, 1);
 `MCM_API_AutoCheckBoxFns(SHOWPROMOTIONPOPUP, 1);
 `MCM_API_AutoCheckBoxFns(USENAME, 1);
@@ -62,6 +64,7 @@ simulated function ClientModCallback(MCM_API_Instance ConfigAPI, int GameMode)
     // Here you create your MCM settings. One line per MCM var.
 	
 	`MCM_API_AutoAddCheckBox(Group, ONLYSQUADDIES);	// false by default
+	`MCM_API_AutoAddCheckBox(Group, ONLYVETS); // false by default
 	`MCM_API_AutoAddCheckBox(Group, USENAME); // true by default
 	`MCM_API_AutoAddCheckBox(Group, SHOWPROMOTIONPOPUP); // false by default
 	`MCM_API_AutoAddCheckBox(Group, ENABLELOGGING); // false by default
@@ -76,6 +79,7 @@ simulated function ClientModCallback(MCM_API_Instance ConfigAPI, int GameMode)
 simulated function LoadSavedSettings()
 {	
 	ONLYSQUADDIES = `GETMCMVAR(ONLYSQUADDIES);
+	ONLYVETS = `GETMCMVAR(ONLYVETS);
 	ENABLELOGGING = `GETMCMVAR(ENABLELOGGING);
 	USENAME = `GETMCMVAR(USENAME);
 	SHOWPROMOTIONPOPUP = `GETMCMVAR(SHOWPROMOTIONPOPUP);
@@ -87,6 +91,7 @@ simulated function LoadSavedSettings()
 simulated function ResetButtonClicked(MCM_API_SettingsPage Page)
 {
 	`MCM_API_AutoReset(ONLYSQUADDIES);
+	`MCM_API_AutoReset(ONLYVETS);
 	`MCM_API_AutoReset(ENABLELOGGING);
 	`MCM_API_AutoReset(USENAME);
 	`MCM_API_AutoReset(SHOWPROMOTIONPOPUP);

@@ -5,7 +5,10 @@ PageTitle="Auto Promote"
 GroupHeader="Auto Promote Settings"
 
 ONLYSQUADDIES_Label="Enable Only Squaddies"
-ONLYSQUADDIES_Tip="Click to enable only promoting troops to rank squaddie"
+ONLYSQUADDIES_Tip="Click to enable only auto promoting troops to rank squaddie"
+
+ONLYVETS_Label="Enable Only Vets"
+ONLYVETS_Tip="Click to enable only auto promoting troops after they have reached rank squaddie"
 
 ENABLELOGGING_Label="Enable Logging"
 ENABLELOGGING_Tip="Click to enable logging if you are attempting to debug or find a specific class's internal name"
