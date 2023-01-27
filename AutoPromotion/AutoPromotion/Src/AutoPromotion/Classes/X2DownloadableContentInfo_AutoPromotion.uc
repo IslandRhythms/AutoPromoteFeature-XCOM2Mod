@@ -18,15 +18,11 @@ exec function PromoteAllSoldiers() {
 	UpdateState = `XCOMHISTORY.CreateNewGameState(true, Container);
 	for (i = 0; i < `XCOMHQ.Crew.Length; i++)
 		{
-			// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
 			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', `XCOMHQ.Crew[i].ObjectID));
 
-		
-			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
+			if (Unit.IsAlive() && Unit.IsSoldier())
 			{
-				// if they have no abilities marked, default to the config files.
-			
-				class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+				class'AutoPromote'.static.autoPromoteConsoleCommand(Unit, UpdateState);
 			}
 		}
 
