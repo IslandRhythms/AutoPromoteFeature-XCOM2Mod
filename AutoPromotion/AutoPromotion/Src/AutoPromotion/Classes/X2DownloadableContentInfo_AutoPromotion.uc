@@ -33,12 +33,12 @@ exec function PromoteAllSoldiers() {
 		`GAMERULES.SubmitGameState(UpdateState);
 }
 
+// omit the nickname if the unit has one
 exec function ListSoldierAbility(string soldierName, int rank, int branch) {
 	local XComGameState_Unit Unit;
 	local int i;
 	local string fullName;
 	local name ability;
-	`log("soldierName"@soldierName);
 	for (i = 0; i < `XCOMHQ.Crew.Length; i++) {
 		Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(`XCOMHQ.Crew[i].ObjectID));
 		fullName = Unit.GetFullName();
