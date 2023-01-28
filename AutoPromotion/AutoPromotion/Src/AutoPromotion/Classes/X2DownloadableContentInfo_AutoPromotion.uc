@@ -52,7 +52,6 @@ static event onPostMission()
 	local XComGameState_Unit Unit;
 	local XComGameStateContext_ChangeContainer Container;
 	local XComGameState UpdateState;
-	local XComGameState_HeadquartersXCom XCOMHQ;
 	local XComGameStateHistory History;
 	local int i;
 	local bool bEnableLogging;
@@ -64,7 +63,6 @@ static event onPostMission()
 	`LOG("onPostMission in Promotion Screen Mod", bEnableLogging, 'Beat_AutoPromote');
 
 	History = `XCOMHISTORY;
-	XCOMHQ = XComGameState_HeadquartersXCom(History.GetSingleGameStateObjectForClass(class'XComGameState_HeadquartersXCom'));
 	Container = class 'XComGameStateContext_ChangeContainer'.static.CreateEmptyChangeContainer("Soldier Auto-Promotion");
 	UpdateState = History.CreateNewGameState(true, Container);
 	Units = `GETMCMVAR(CHECKBARRACKS) ? `XCOMHQ.Crew : `XCOMHQ.Squad;
