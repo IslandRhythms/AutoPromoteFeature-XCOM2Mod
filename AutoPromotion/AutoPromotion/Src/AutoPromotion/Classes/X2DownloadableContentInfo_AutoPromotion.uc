@@ -70,9 +70,14 @@ static event onPostMission()
 	Units = `GETMCMVAR(CHECKBARRACKS) ? `XCOMHQ.Crew : `XCOMHQ.Squad;
 
 	`LOG("ObjectIDs of the deployed squad returning from mission", bEnableLogging, 'Beat_AutoPromote');
+	foreach `XCOMHQ.Squad(UnitRef)
+	{
+		Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(UnitRef.ObjectID));
+		`LOG(Unit.GetFullName() @"ID [" @UnitRef.ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
+	}
 
-
-	for (i = 0; i < Units.Length; i++) {
+	for (i = 0; i < Units.Length; i++)
+	{
 		Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(Units[i].ObjectID));
 		`LOG(Unit.GetFullName() @"ID [" @UnitRef.ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
 		if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
@@ -86,12 +91,14 @@ static event onPostMission()
 						`LOG("ONLYSQUADDIES is enabled and this unit is a rookie, start process.", bEnableLogging, 'Beat_AutoPromote');
 			
 						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
-					} else { // only vets enabled, only squaddies disabled.
-						if (Unit.GetSoldierRank() != 0) {
+					} else if (`GETMCMVAR(ONLYVETS) && Unit.GetSoldierRank() != 0) {
 							`LOG("ONLYVETS is enabled and the unit is not a rookie, start process", bEnableLogging, 'Beat_AutoPromote');
 			
 							class'AutoPromote'.static.autoPromote(Unit, UpdateState);
-						}
+					} else {
+							`LOG("ONLYVETS and ONLYSQUADDIES is disabled so business as usual, start process", bEnableLogging, 'Beat_AutoPromote');
+			
+							class'AutoPromote'.static.autoPromote(Unit, UpdateState);
 					}
 		}
 	}
