@@ -56,6 +56,7 @@ static event onPostMission()
 	local XComGameStateHistory History;
 	local int i;
 	local bool bEnableLogging;
+	local array<StateObjectReference> Units;
 
 	bEnableLogging = `GETMCMVAR(ENABLELOGGING);
 
@@ -66,12 +67,13 @@ static event onPostMission()
 	XCOMHQ = XComGameState_HeadquartersXCom(History.GetSingleGameStateObjectForClass(class'XComGameState_HeadquartersXCom'));
 	Container = class 'XComGameStateContext_ChangeContainer'.static.CreateEmptyChangeContainer("Soldier Auto-Promotion");
 	UpdateState = History.CreateNewGameState(true, Container);
+	Units = `GETMCMVAR(CHECKBARRACKS) ? `XCOMHQ.Crew : `XCOMHQ.Squad;
 
 	`LOG("ObjectIDs of the deployed squad returning from mission", bEnableLogging, 'Beat_AutoPromote');
 
-	foreach `XCOMHQ.Squad(UnitRef)
-	{
-		Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(UnitRef.ObjectID));
+
+	for (i = 0; i < Units.Length; i++) {
+		Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(Units[i].ObjectID));
 		`LOG(Unit.GetFullName() @"ID [" @UnitRef.ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
 		if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
 		{
@@ -84,44 +86,14 @@ static event onPostMission()
 						`LOG("ONLYSQUADDIES is enabled and this unit is a rookie, start process.", bEnableLogging, 'Beat_AutoPromote');
 			
 						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
-					} else {
-						// only vets enabled, only squaddies disabled.
-						`LOG("ONLYVETS is enabled and the unit is not a rookie, start process", bEnableLogging, 'Beat_AutoPromote');
+					} else { // only vets enabled, only squaddies disabled.
+						if (Unit.GetSoldierRank() != 0) {
+							`LOG("ONLYVETS is enabled and the unit is not a rookie, start process", bEnableLogging, 'Beat_AutoPromote');
 			
-						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+							class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+						}
 					}
 		}
-	}
-
-	`LOG("Checking values that could be used to determine eligibility promotion", bEnableLogging, 'Beat_AutoPromote');
-	`LOG("ObjectIDs of the entire roster", bEnableLogging, 'Beat_AutoPromote');
-	if (`GETMCMVAR(CHECKBARRACKS)) {
-		for (i = 0; i < XCOMHQ.Crew.Length; i++)
-			{
-				// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
-				Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', XCOMHQ.Crew[i].ObjectID));
-		
-				`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
-		
-				if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
-				{
-					if (`GETMCMVAR(ONLYSQUADDIES) && `GETMCMVAR(ONLYVETS)) {
-						// if they have no abilities marked, default to the config files.
-						`LOG("This Unit is eligible to Promote, start process", bEnableLogging, 'Beat_AutoPromote');
-			
-						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
-					} else if (`GETMCMVAR(ONLYSQUADDIES) && Unit.GetSoldierRank() == 0) {
-						`LOG("ONLYSQUADDIES is enabled and this unit is a rookie, start process.", bEnableLogging, 'Beat_AutoPromote');
-			
-						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
-					} else {
-						// only vets enabled, only squaddies disabled.
-						`LOG("ONLYVETS is enabled and the unit is not a rookie, start process", bEnableLogging, 'Beat_AutoPromote');
-			
-						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
-					}
-				}
-			}
 	}
 
 	`GAMERULES.SubmitGameState(UpdateState);

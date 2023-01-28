@@ -19,7 +19,7 @@ The following has been fixed:
 
 The following has been added:
 [list]
-[*] Console Command PromoteAllSoldiers that will autopromote the entire barracks. Designed to be used in tandum with LevelUpBarracks
+[*] Console Command PromoteAllSoldiers that will autopromote the entire barracks. Designed to be used in tandum with LevelUpBarracks. Ignores MCM settings
 [*] Console Command ListSoldierAbility(string SoldierName, int rank, int branch) that will tell the name of the ability. So a reaper that is a corporal with branch = 1 will return Remote Start
 [*] MCM option CHECKBARRACKS that will also check the barracks for units eligible for promotion after every mission. Useful if you don't have the log nor want the game log enabled in your game. Use this instead of the console command if you don't intend on using LevelUpBarracks
 [*] MCM option ONLYVETS that will only promote soliders starting at rank squaddie. If you enable this option with ONLYSQUADDIES, it will be as if neither of the options were enabled.
