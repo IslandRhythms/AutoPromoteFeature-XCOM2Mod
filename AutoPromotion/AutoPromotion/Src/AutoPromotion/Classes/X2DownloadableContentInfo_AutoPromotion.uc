@@ -73,42 +73,55 @@ static event onPostMission()
 	{
 		Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(UnitRef.ObjectID));
 		`LOG(Unit.GetFullName() @"ID [" @UnitRef.ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
+		if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
+		{
+					if (`GETMCMVAR(ONLYSQUADDIES) && `GETMCMVAR(ONLYVETS)) {
+						// if they have no abilities marked, default to the config files.
+						`LOG("This Unit is eligible to Promote, start process", bEnableLogging, 'Beat_AutoPromote');
+			
+						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+					} else if (`GETMCMVAR(ONLYSQUADDIES) && Unit.GetSoldierRank() == 0) {
+						`LOG("ONLYSQUADDIES is enabled and this unit is a rookie, start process.", bEnableLogging, 'Beat_AutoPromote');
+			
+						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+					} else {
+						// only vets enabled, only squaddies disabled.
+						`LOG("ONLYVETS is enabled and the unit is not a rookie, start process", bEnableLogging, 'Beat_AutoPromote');
+			
+						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+					}
+		}
 	}
 
 	`LOG("Checking values that could be used to determine eligibility promotion", bEnableLogging, 'Beat_AutoPromote');
 	`LOG("ObjectIDs of the entire roster", bEnableLogging, 'Beat_AutoPromote');
-	if (`GETMCMVAR(ONLYSQUADDIES)) {
-	for (i = 0; i < XCOMHQ.Crew.Length; i++)
-		{
-			// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
-			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', XCOMHQ.Crew[i].ObjectID));
-		
-			`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
-		
-			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier() && Unit.GetSoldierRank() == 0)
-			{
-				// if they have no abilities marked, default to the config files.
-				`LOG("This Unit is eligible to Promote, start process", bEnableLogging, 'Beat_AutoPromote');
-			
-				class'AutoPromote'.static.autoPromote(Unit, UpdateState);
-			}
-		}
-	} else {
+	if (`GETMCMVAR(CHECKBARRACKS)) {
 		for (i = 0; i < XCOMHQ.Crew.Length; i++)
-		{
-			// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
-			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', XCOMHQ.Crew[i].ObjectID));
-		
-			`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
-		
-			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
 			{
-				// if they have no abilities marked, default to the config files.
-				`LOG("This Unit is eligible to Promote, start process", bEnableLogging, 'Beat_AutoPromote');
+				// Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(XCOMHQ.Crew[i].ObjectID));
+				Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', XCOMHQ.Crew[i].ObjectID));
+		
+				`LOG(Unit.GetFullName() @"ID [" @XCOMHQ.Crew[i].ObjectID @"]", bEnableLogging, 'Beat_AutoPromote');
+		
+				if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
+				{
+					if (`GETMCMVAR(ONLYSQUADDIES) && `GETMCMVAR(ONLYVETS)) {
+						// if they have no abilities marked, default to the config files.
+						`LOG("This Unit is eligible to Promote, start process", bEnableLogging, 'Beat_AutoPromote');
 			
-				class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+					} else if (`GETMCMVAR(ONLYSQUADDIES) && Unit.GetSoldierRank() == 0) {
+						`LOG("ONLYSQUADDIES is enabled and this unit is a rookie, start process.", bEnableLogging, 'Beat_AutoPromote');
+			
+						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+					} else {
+						// only vets enabled, only squaddies disabled.
+						`LOG("ONLYVETS is enabled and the unit is not a rookie, start process", bEnableLogging, 'Beat_AutoPromote');
+			
+						class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+					}
+				}
 			}
-		}
 	}
 
 	`GAMERULES.SubmitGameState(UpdateState);

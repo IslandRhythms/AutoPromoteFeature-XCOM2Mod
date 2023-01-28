@@ -14,6 +14,7 @@ var localized string GroupHeader;
 
 `MCM_API_AutoCheckBoxVars(ONLYSQUADDIES);
 `MCM_API_AutoCheckBoxVars(ONLYVETS);
+`MCM_API_AutoCheckBoxVars(CHECKBARRACKS);
 `MCM_API_AutoCheckBoxVars(ENABLELOGGING);
 `MCM_API_AutoCheckBoxVars(SHOWPROMOTIONPOPUP);
 `MCM_API_AutoCheckBoxVars(USENAME);
@@ -30,6 +31,7 @@ var localized string GroupHeader;
 
 `MCM_API_AutoCheckBoxFns(ONLYSQUADDIES, 1);
 `MCM_API_AutoCheckBoxFns(ONLYVETS, 1);
+`MCM_API_AutoCheckBoxFns(CHECKBARRACKS, 1);
 `MCM_API_AutoCheckBoxFns(ENABLELOGGING, 1);
 `MCM_API_AutoCheckBoxFns(SHOWPROMOTIONPOPUP, 1);
 `MCM_API_AutoCheckBoxFns(USENAME, 1);
@@ -65,6 +67,7 @@ simulated function ClientModCallback(MCM_API_Instance ConfigAPI, int GameMode)
 	
 	`MCM_API_AutoAddCheckBox(Group, ONLYSQUADDIES);	// false by default
 	`MCM_API_AutoAddCheckBox(Group, ONLYVETS); // false by default
+	`MCM_API_AutoAddCheckBox(Group, CHECKBARRACKS); // false by default
 	`MCM_API_AutoAddCheckBox(Group, USENAME); // true by default
 	`MCM_API_AutoAddCheckBox(Group, SHOWPROMOTIONPOPUP); // false by default
 	`MCM_API_AutoAddCheckBox(Group, ENABLELOGGING); // false by default
@@ -80,6 +83,7 @@ simulated function LoadSavedSettings()
 {	
 	ONLYSQUADDIES = `GETMCMVAR(ONLYSQUADDIES);
 	ONLYVETS = `GETMCMVAR(ONLYVETS);
+	CHECKBARRACKS = `GETMCMVAR(CHECKBARRACKS);
 	ENABLELOGGING = `GETMCMVAR(ENABLELOGGING);
 	USENAME = `GETMCMVAR(USENAME);
 	SHOWPROMOTIONPOPUP = `GETMCMVAR(SHOWPROMOTIONPOPUP);
@@ -92,6 +96,7 @@ simulated function ResetButtonClicked(MCM_API_SettingsPage Page)
 {
 	`MCM_API_AutoReset(ONLYSQUADDIES);
 	`MCM_API_AutoReset(ONLYVETS);
+	`MCM_API_AutoReset(CHECKBARRACKS);
 	`MCM_API_AutoReset(ENABLELOGGING);
 	`MCM_API_AutoReset(USENAME);
 	`MCM_API_AutoReset(SHOWPROMOTIONPOPUP);

@@ -9,12 +9,20 @@ if you would like to add a custom class you made or a custom class you use, you 
 Simply [url=https://github.com/IslandRhythms/AutoPromoteFeature-XCOM2Mod] Click here[/url] to go the repository, and go to the XComGameData.ini file and add your changes.
 
 
-[h1]New Features and Fixes with update released on 11/30/2022[/h1]
+[h1]New Features and Fixes with update released on 01/28/2023[/h1]
 
 The following has been fixed:
 [list]
-[*] Soldiers on Covert actions that after completion would be eligible for promotion were not promoted.
-[*] When a soldier was promoted to squaddie, their gun would not change. That has been fixed.
+[*] Case where a gun with attachments used by a rookie would go into the void when the rookie was autopromoted. Turns out the optional HQ parameter is not optional.
+[*] Issue with hero classes autopromoting. The understanding of the rank and branch system was flawed. The updated explanation is in XComGameData.ini
+[/list]
+
+The following has been added:
+[list]
+[*] Console Command PromoteAllSoldiers that will autopromote the entire barracks. Designed to be used in tandum with LevelUpBarracks
+[*] Console Command ListSoldierAbility(string SoldierName, int rank, int branch) that will tell the name of the ability. So a reaper that is a corporal with branch = 1 will return Remote Start
+[*] MCM option CHECKBARRACKS that will also check the barracks for units eligible for promotion after every mission. Useful if you don't have the log nor want the game log enabled in your game.
+[*] MCM option ONLYVETS that will only promote soliders starting at rank squaddie. If you enable this option with ONLYSQUADDIES, it will be as if neither of the options were enabled.
 [/list]
 
 [hr][/hr]
@@ -32,6 +40,10 @@ Due to demand, the Mod Config Menu has been integrated to enable a more customiz
 [/list]
 
 [h2] Code Improvement, Logging Improvement, LWOTC Support, Using The Soldier's Name, as well as the new image can be attributed to Rusty Dios. Thanks Rusty.[/h2]
+
+[h2] Code Refactor done by me[/h2]
+
+If you want to say more than thank you, feel free to [url=https://www.buymeacoffee.com/TheIslandRhythm]Buy me an apple[/url]
 
 [h3] How to find the Soldier's Internal Class Name or Full Name [/h3]
 Make sure that you have logging enabled, otherwise you will not see the logs!

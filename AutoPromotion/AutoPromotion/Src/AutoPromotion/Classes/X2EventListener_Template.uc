@@ -58,14 +58,21 @@ static function EventListenerReturn CheckForAvailablePromotions(Object EventData
 				Unit.bNeedsNewClassPopup = `GETMCMVAR(SHOWPROMOTIONPOPUP);
 				continue;
 			}
-			if(`GETMCMVAR(ONLYSQUADDIES)) {
+			if(`GETMCMVAR(ONLYSQUADDIES) && !GETMCMVAR(ONLYVETS)) {
 				if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier() && Unit.GetSoldierRank() == 0) {
 					`LOG("This Unit is eligible to Promote and is a rookie, start process", bEnableLogging, 'Beat_AutoPromote');
 					class'AutoPromote'.static.autoPromote(Unit, UpdateState);
 				}
-			} else {
+			} else if (`GETMCMVAR(ONLYVETS) && !`GETMCMVAR(ONLYSQUADDIES)) {
+				if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier() && Unit.GetSoldierRank() != 0) {
+					`LOG("This Unit is not a rookie and is eligible to Promote, start process", bEnableLogging, 'Beat_AutoPromote');
+					class'AutoPromote'.static.autoPromote(Unit, UpdateState);
+				}
+			}
+			// if this statment is executing, that means the user enabled ONLYVETS and ONLYSQUADDIES, essentially making the two settings useless
+			else {
 				if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier()) {
-					`LOG("This Unit is eligible to Promote, start process", bEnableLogging, 'Beat_AutoPromote');
+					`LOG("The user enabled both settings, rendering the settings useless. Start process", bEnableLogging, 'Beat_AutoPromote');
 					class'AutoPromote'.static.autoPromote(Unit, UpdateState);
 				}
 			}
