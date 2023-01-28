@@ -58,7 +58,7 @@ static function EventListenerReturn CheckForAvailablePromotions(Object EventData
 				Unit.bNeedsNewClassPopup = `GETMCMVAR(SHOWPROMOTIONPOPUP);
 				continue;
 			}
-			if(`GETMCMVAR(ONLYSQUADDIES) && !GETMCMVAR(ONLYVETS)) {
+			if(`GETMCMVAR(ONLYSQUADDIES) && !`GETMCMVAR(ONLYVETS)) {
 				if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier() && Unit.GetSoldierRank() == 0) {
 					`LOG("This Unit is eligible to Promote and is a rookie, start process", bEnableLogging, 'Beat_AutoPromote');
 					class'AutoPromote'.static.autoPromote(Unit, UpdateState);

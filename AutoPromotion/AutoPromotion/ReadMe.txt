@@ -21,7 +21,7 @@ The following has been added:
 [list]
 [*] Console Command PromoteAllSoldiers that will autopromote the entire barracks. Designed to be used in tandum with LevelUpBarracks
 [*] Console Command ListSoldierAbility(string SoldierName, int rank, int branch) that will tell the name of the ability. So a reaper that is a corporal with branch = 1 will return Remote Start
-[*] MCM option CHECKBARRACKS that will also check the barracks for units eligible for promotion after every mission. Useful if you don't have the log nor want the game log enabled in your game.
+[*] MCM option CHECKBARRACKS that will also check the barracks for units eligible for promotion after every mission. Useful if you don't have the log nor want the game log enabled in your game. Use this instead of the console command if you don't intend on using LevelUpBarracks
 [*] MCM option ONLYVETS that will only promote soliders starting at rank squaddie. If you enable this option with ONLYSQUADDIES, it will be as if neither of the options were enabled.
 [/list]
 
@@ -31,7 +31,9 @@ The following has been implemented upon user request/user aid
 [h3]Mod Config Menu Integration[/h3]
 Due to demand, the Mod Config Menu has been integrated to enable a more customized auto promoting experience.
 [list]
-[*] Enable OnlySquaddies => Enable to make it so that it will only auto promote to rank squaddie. disabled by default
+[*] Enable OnlySquaddies => Enable to make it so that it will only auto promote to rank squaddie. disabled by default. Having this and OnlyVets enabled renders the two options useless as now it will autopromote all troops regardless of rank.
+[*] Enable OnlyVets => Enable to make it so that it will only auto promote starting at rank squaddie. disabled by default. Having this and OnlySquaddies enabled renders the two options useless as now it will autopromote all troops regardless of rank.
+[*] Check Barracks => Enable to check the barracks after every mission for troops eligible for promotion and auto promote them.
 [*] Enable Logging => This is helpful for debugging but also figuring out what the class internal name is. If you want to add a custom class and don't know the internal name, enable to find out. Details below. disabled by default
 [*] Show Promotion Popup => When a soldier is eligible for promotion, a pop up occurs. You can disable/enable this. This is disabled by default.
 [*] Ignore Covert Action => Enable to not autopromte soldiers on covert actions. If you have Show Promotion Popup enabled, it will still execute.
@@ -43,7 +45,7 @@ Due to demand, the Mod Config Menu has been integrated to enable a more customiz
 
 [h2] Code Refactor done by me[/h2]
 
-If you want to say more than thank you, feel free to [url=https://www.buymeacoffee.com/TheIslandRhythm]Buy me an apple[/url]
+If you want to say more than thank you, feel free to [url=https://www.buymeacoffee.com/TheIslandRhythm] Buy me an apple[/url]
 
 [h3] How to find the Soldier's Internal Class Name or Full Name [/h3]
 Make sure that you have logging enabled, otherwise you will not see the logs!
