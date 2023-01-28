@@ -5,10 +5,16 @@ PageTitle="Auto Promote"
 GroupHeader="Auto Promote Settings"
 
 ONLYSQUADDIES_Label="Enable Only Squaddies"
-ONLYSQUADDIES_Tip="Click to enable only promoting troops to rank squaddie"
+ONLYSQUADDIES_Tip="Click to enable only auto promoting troops to rank squaddie. Having this and Only Vets enabled enacts the core functionality of the mod."
+
+ONLYVETS_Label="Enable Only Vets"
+ONLYVETS_Tip="Click to enable only auto promoting troops after they have reached rank squaddie. Having this and Only Squaddies Enabled enacts the core function of the mod."
 
 ENABLELOGGING_Label="Enable Logging"
 ENABLELOGGING_Tip="Click to enable logging if you are attempting to debug or find a specific class's internal name"
+
+CHECKBARRACKS_Label="Check Barracks"
+CHECKBARRACKS_Tip="Click to enable checking the barracks after every mission for units eligible for promotion and promoting them on top of the squad that went on the mission"
 
 SHOWPROMOTIONPOPUP_Label="Enable Promotion Popup"
 SHOWPROMOTIONPOPUP_Tip="Click to enable showing the promotion popup when your troop is ready to promote"

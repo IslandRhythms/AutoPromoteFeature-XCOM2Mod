@@ -118,8 +118,7 @@ static function autoPromoteConsoleCommand(XComGameState_Unit Unit, XComGameState
 	local name soldierType;
 	local string soldierFullName;
 	local int Index, iRank, iBranch, i;
-	local bool bIsLogged, bUseClassIfNoMatchedName, bShowRankedUpPopups, bOnlySquaddies;
-	local XComGameState_HeadquartersXCom XHQ;
+	local bool bIsLogged, bUseClassIfNoMatchedName;
 	
 	soldierType = Unit.GetSoldierClassTemplateName();
 	soldierFullName = Unit.GetFullName();
@@ -129,8 +128,6 @@ static function autoPromoteConsoleCommand(XComGameState_Unit Unit, XComGameState
 
 	bIsLogged = `GETMCMVAR(ENABLELOGGING);
 	bUseClassIfNoMatchedName = `GETMCMVAR(USENAME);
-	bShowRankedUpPopups = `GETMCMVAR(SHOWPROMOTIONPOPUP);
-	bOnlySquaddies = `GETMCMVAR(ONLYSQUADDIES);
 
 	//not a named unit, so go by class
 	if (Index == INDEX_NONE && bUseClassIfNoMatchedName)
