@@ -28,3 +28,5 @@ IGNORECA_Tip="Click to enable not promoting the units that became eligible for p
 RANKNOBUY_Label="Enable Ranking Up But Not Buying Abilities"
 RANKNOBUY_Tip="Click to enable ranking the unit up to the next rank (ex: squaddie to corporal) but not buying the ability"
 
+BUYRANDOM_Label="Enable to have your troops select a random ability when they rank up. Enabling causes the mod to ignore presets for classes as well as the rank no buy option"
+

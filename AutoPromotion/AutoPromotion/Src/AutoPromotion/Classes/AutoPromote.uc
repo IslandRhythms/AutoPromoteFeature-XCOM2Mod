@@ -20,8 +20,8 @@ struct AutoPromote_SoldierTypes
 
 struct AutoPromote_RandomEntries
 {
-	var int branchNumber;
-	var string AbName;
+	var int BranchNumber;
+	var name AbName;
 };
 
 var config array<AutoPromote_SoldierTypes> AutoPromotePresets;
@@ -33,9 +33,11 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 {
 	local name soldierType;
 	local string soldierFullName;
-	local int Index, iRank, iBranch;
+	local int Index, iRank, iBranch, i, random;
 	local bool bIsLogged, bUseClassIfNoMatchedName, bShowRankedUpPopups, bOnlySquaddies;
 	local XComGameState_HeadquartersXCom XHQ;
+	local array<AutoPromote_RandomEntries> Options;
+	local AutoPromote_RandomEntries Entry;
 	
 	soldierType = Unit.GetSoldierClassTemplateName();
 	soldierFullName = Unit.GetFullName();
@@ -66,7 +68,7 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 
 	// The soldier's class/name has a preset, continue on to autopromote it
 	//INDEX_NONE == -1 , these are the same so removed the &&
-	if (Index != INDEX_NONE) // add a check for the MCM var to buy random ability.
+	if (Index != INDEX_NONE && !`GETMCMVAR(BUYRANDOM))
 	{
 		switch(iRank) 
 		{
@@ -102,7 +104,24 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 
 		//`GAMERULES.SubmitGameState(UpdateState);
 	}
-	else // add an else if statement here that buys a random ability if the mcm var is true.
+	else if (`GETMCMVAR(BUYRANDOM)) {
+		for (i = 0; i < Unit.AbilityTree[iRank].Abilities.Length; i++) {
+			if (Unit.AbilityTree[iRank].Abilities[i].AbilityName != '') {
+				Entry.AbName = Unit.AbilityTree[iRank].Abilities[i].AbilityName;
+				Entry.BranchNumber = i;
+				Options.AddItem(Entry);
+			}
+		}
+		// now select a random entry from the array.
+		random = `SYNC_RAND_STATIC(Options.Length - 1);
+		iBranch = Options[random].BranchNumber;
+		// Now buy the selected ability and all the other good stuff
+		Unit.BuySoldierProgressionAbility(UpdateState, iRank, iBranch);
+		Unit.RankUpSoldier(UpdateState);
+		Unit.bRankedUp = false;
+		Unit.bNeedsNewClassPopup = bShowRankedUpPopups;
+	}
+	else
 	{
 		// if it doesn't have a preset, not our problem. -- but we CAN log the details of the class
 		`LOG("If you have a custom soliderType, THIS is what you want to write into the game data ini file", bIsLogged, 'Beat_AutoPromote');
