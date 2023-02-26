@@ -10,3 +10,4 @@ var config bool SHOWPROMOTIONPOPUP;
 var config bool USENAME;
 var config bool IGNORECA;
 var config bool RANKNOBUY;
+var config bool BUYRANDOM;

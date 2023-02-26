@@ -46,6 +46,23 @@ exec function ListSoldierAbility(string soldierName, int rank, int branch) {
 
 }
 
+exec function GetSoldierAbilitiesForRank(string soldierName, int rank) {
+	local XComGameState_Unit Unit;
+	local int i, j;
+	local string fullName;
+	`log("rank is"@rank);
+	for (i = 0; i < `XCOMHQ.Crew.Length; i++) {
+		Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(`XCOMHQ.Crew[i].ObjectID));
+		fullName = Unit.GetFullName();
+		if(fullName == soldierName) {
+			for (j = 0; j < Unit.AbilityTree[rank].Abilities.Length; j++) {
+				`log("Ability name is "@Unit.AbilityTree[rank].Abilities[j].AbilityName);
+				`log("branch number is "@j);
+			}
+		}
+	}
+}
+
 static event onPostMission()
 {
 	local StateObjectReference UnitRef;
