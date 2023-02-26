@@ -9,20 +9,12 @@ if you would like to add a custom class you made or a custom class you use, you 
 Simply [url=https://github.com/IslandRhythms/AutoPromoteFeature-XCOM2Mod] Click here[/url] to go the repository, and go to the XComGameData.ini file and add your changes.
 
 
-[h1]New Features and Fixes with update released on 01/28/2023[/h1]
-
-The following has been fixed:
-[list]
-[*] Case where a gun with attachments used by a rookie would go into the void when the rookie was autopromoted. Turns out the optional HQ parameter is not optional.
-[*] Issue with hero classes autopromoting. The understanding of the rank and branch system was flawed. The updated explanation is in XComGameData.ini
-[/list]
+[h1]New Features and Fixes with update released on 02/26/2023[/h1]
 
 The following has been added:
 [list]
-[*] Console Command PromoteAllSoldiers that will autopromote the entire barracks. Designed to be used in tandum with LevelUpBarracks. Ignores MCM settings
-[*] Console Command ListSoldierAbility(string SoldierName, int rank, int branch) that will tell the name of the ability. So a reaper that is a corporal with branch = 1 will return Remote Start
-[*] MCM option CHECKBARRACKS that will also check the barracks for units eligible for promotion after every mission. Useful if you don't have the log nor want the game log enabled in your game. Use this instead of the console command if you don't intend on using LevelUpBarracks
-[*] MCM option ONLYVETS that will only promote soliders starting at rank squaddie. If you enable this option with ONLYSQUADDIES, it will be as if neither of the options were enabled.
+[*] Console Command GetSoldierAbilitisForRank(string SoldierName, int rank) logs the ability name and position for the given rank in the log file
+[*] Buy Random Ability => Enable to have your troops select a random ability when they rank up. Enabling causes the mod to ignore presets for classes as well as the rank no buy option.s
 [/list]
 
 [hr][/hr]
@@ -37,7 +29,8 @@ Due to demand, the Mod Config Menu has been integrated to enable a more customiz
 [*] Enable Logging => This is helpful for debugging but also figuring out what the class internal name is. If you want to add a custom class and don't know the internal name, enable to find out. Details below. disabled by default
 [*] Show Promotion Popup => When a soldier is eligible for promotion, a pop up occurs. You can disable/enable this. This is disabled by default.
 [*] Ignore Covert Action => Enable to not autopromte soldiers on covert actions. If you have Show Promotion Popup enabled, it will still execute.
-[*] Rank up but not buy ability => Rank the soldier up to the next available rank (ex: squaddie to corporal) but do not buy the ability. disabled by default.
+[*] Rank Up But Not Buy Ability => Rank the soldier up to the next available rank (ex: squaddie to corporal) but do not buy the ability. disabled by default.
+[*] Enable Buying Random Ability => Enable to have your troops select a random ability when they rank up. Enabling causes the mod to ignore presets for classes as well as the rank no buy option.
 [*] Use Soldier Full Name => Enable to allow using the soldier's name as well as the class name. So if John Doe is no found, it will default to the class the trooper is. Enabled by default. Credit to RustyDios.
 [/list]
 
@@ -50,6 +43,7 @@ If you want to say more than thank you, feel free to [url=https://www.buymeacoff
 [h3] How to find the Soldier's Internal Class Name or Full Name [/h3]
 Make sure that you have logging enabled, otherwise you will not see the logs!
 Also make sure you have ranked up a soldier to squaddie with the class in question, otherwise you won't see it.
+Also make sure that you don't have buying a random ability enabled.
 [list]
 [*] Go to this file in your computer
 [code]..\Documents\my games\XCOM2 War of the Chosen\XComGame\Logs\Launch.log[/code]
