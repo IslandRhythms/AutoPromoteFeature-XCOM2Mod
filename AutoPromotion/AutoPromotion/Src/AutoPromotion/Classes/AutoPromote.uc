@@ -18,6 +18,12 @@ struct AutoPromote_SoldierTypes
 	var int brigadier;
 };
 
+struct AutoPromote_RandomEntries
+{
+	var int branchNumber;
+	var string AbName;
+};
+
 var config array<AutoPromote_SoldierTypes> AutoPromotePresets;
 
 `include(AutoPromotion/Src/ModConfigMenuAPI/MCM_API_CfgHelpers.uci)
@@ -59,9 +65,8 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 	}
 
 	// The soldier's class/name has a preset, continue on to autopromote it
-
 	//INDEX_NONE == -1 , these are the same so removed the &&
-	if (Index != INDEX_NONE )
+	if (Index != INDEX_NONE) // add a check for the MCM var to buy random ability.
 	{
 		switch(iRank) 
 		{
@@ -97,7 +102,7 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 
 		//`GAMERULES.SubmitGameState(UpdateState);
 	}
-	else
+	else // add an else if statement here that buys a random ability if the mcm var is true.
 	{
 		// if it doesn't have a preset, not our problem. -- but we CAN log the details of the class
 		`LOG("If you have a custom soliderType, THIS is what you want to write into the game data ini file", bIsLogged, 'Beat_AutoPromote');
