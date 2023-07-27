@@ -29,6 +29,24 @@ exec function PromoteAllSoldiers() {
 		`GAMERULES.SubmitGameState(UpdateState);
 }
 
+exec function PromoteSoldier(string soldierName) {
+	local XComGameStateContext_ChangeContainer Container;
+	local XComGameState UpdateState;
+	local XComGameState_Unit Unit;
+	local int i;
+
+	Container = class 'XComGameStateContext_ChangeContainer'.static.CreateEmptyChangeContainer("Soldier Auto-Promotion");
+	UpdateState = `XCOMHISTORY.CreateNewGameState(true, Container);
+
+	for (i = 0; i < `XCOMHQ.Crew.Length; i++) {
+		Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', `XCOMHQ.Crew[i].ObjectID));
+		if (Unit.GetFullName() == soldierName && Unit.IsAlive() && Unit.IsSoldier()) {
+			class'AutoPromote'.static.autoPromoteConsoleCommand(Unit, UpdateState);
+		}
+	}
+	`GAMERULES.SubmitGameState(UpdateState);
+}
+
 // omit the nickname if the unit has one
 exec function ListSoldierAbility(string soldierName, int rank, int branch) {
 	local XComGameState_Unit Unit;
