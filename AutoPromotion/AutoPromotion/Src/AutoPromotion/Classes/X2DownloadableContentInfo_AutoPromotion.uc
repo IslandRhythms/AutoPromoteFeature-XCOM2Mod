@@ -8,6 +8,7 @@ class X2DownloadableContentInfo_AutoPromotion extends X2DownloadableContentInfo;
 static event OnLoadedSavedGame(){}
 static event InstallNewCampaign(XComGameState StartState){}
 
+// to be used after LevelUpBarracks
 exec function PromoteAllSoldiers() {
 	local int i;
 	local XComGameStateContext_ChangeContainer Container;
@@ -20,7 +21,7 @@ exec function PromoteAllSoldiers() {
 		{
 			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', `XCOMHQ.Crew[i].ObjectID));
 
-			if (Unit.IsAlive() && Unit.IsSoldier())
+			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
 			{
 				class'AutoPromote'.static.autoPromoteConsoleCommand(Unit, UpdateState);
 			}
@@ -29,7 +30,9 @@ exec function PromoteAllSoldiers() {
 		`GAMERULES.SubmitGameState(UpdateState);
 }
 
-exec function PromoteSoldier(string soldierName) {
+
+// use in conjunction with MakeSoldierAClass.
+exec function PromoteSoldier(string soldierName, optional int newRank = 1) {
 	local XComGameStateContext_ChangeContainer Container;
 	local XComGameState UpdateState;
 	local XComGameState_Unit Unit;
@@ -41,7 +44,10 @@ exec function PromoteSoldier(string soldierName) {
 	for (i = 0; i < `XCOMHQ.Crew.Length; i++) {
 		Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', `XCOMHQ.Crew[i].ObjectID));
 		if (Unit.GetFullName() == soldierName && Unit.IsAlive() && Unit.IsSoldier()) {
-			class'AutoPromote'.static.autoPromoteConsoleCommand(Unit, UpdateState);
+			if (Unit.GetSoldierRank() >= newRank || newRank > class'X2ExperienceConfig'.static.GetMaxRank()) {
+				return;
+			}
+			class'AutoPromote'.static.promoteSingleSoldier(Unit, newRank, UpdateState);
 		}
 	}
 	`GAMERULES.SubmitGameState(UpdateState);

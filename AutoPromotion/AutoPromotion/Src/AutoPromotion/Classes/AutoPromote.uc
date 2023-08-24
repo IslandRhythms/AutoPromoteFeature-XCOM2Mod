@@ -91,7 +91,6 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 		Unit.RankUpSoldier(UpdateState);
 		Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
 		Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
-
 		//`GAMERULES.SubmitGameState(UpdateState); 				// -NO! submit gamestates at the code you create them in, it's just easier to follow
 	} 
 	else if (soldierType == 'Rookie')
@@ -186,6 +185,64 @@ static function autoPromoteConsoleCommand(XComGameState_Unit Unit, XComGameState
 		// Unit.bRankedUp in this case can remain unassigned as the LevelUpBarracks command did everything but run BuySoldierProgression
 		// Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
 	}
+
+}
+
+// Like LevelUpBarracks but for a single soldier
+static function promoteSingleSoldier(XComGameState_Unit Unit, int newRank, XComGameState UpdateState) {
+
+	local name soldierType;
+	local string soldierFullName;
+	local int Index, iRank, iBranch, RankUps, i;
+	local bool bIsLogged, bUseClassIfNoMatchedName;
+	
+	soldierType = Unit.GetSoldierClassTemplateName();
+	soldierFullName = Unit.GetFullName();
+
+	iRank = Unit.GetSoldierRank();
+	RankUps = newRank - iRank;
+	Index = default.AutoPromotePresets.find('soldierName', soldierFullName );
+
+	bIsLogged = `GETMCMVAR(ENABLELOGGING);
+	bUseClassIfNoMatchedName = `GETMCMVAR(USENAME);
+
+	//not a named unit, so go by class
+	if (Index == INDEX_NONE && bUseClassIfNoMatchedName)
+	{
+		Index = default.AutoPromotePresets.find('soldierClass', soldierType);
+	}
+	else
+	{
+		`LOG("No Named match for unit [" @soldierFullName @"], AND Use Class auto-match turned off", bIsLogged, 'Beat_AutoPromote');
+		`LOG("SKIPPED AUTO-PROMOTION", bIsLogged, 'Beat_AutoPromote');
+		return;
+	}
+	// check case where it is a rookie that got promoted from the LevelUpBarracks command
+	for (i = iRank; i < RankUps; i++) {
+		switch(i) 
+			{
+				case 1: iBranch = default.AutoPromotePresets[Index].corporal;		break;
+				case 2:	iBranch = default.AutoPromotePresets[Index].sergeant;		break;
+				case 3:	iBranch = default.AutoPromotePresets[Index].lieutenant;		break;
+				case 4:	iBranch = default.AutoPromotePresets[Index].captain;		break;
+				case 5:	iBranch = default.AutoPromotePresets[Index].major;			break;
+				case 6:	iBranch = default.AutoPromotePresets[Index].colonel;		break;
+				case 7: iBranch = default.AutoPromotePresets[Index].brigadier;		break;	//adding LWotC compatibility
+			
+				default:
+					//this is essentially iRank 0, but also covers any typo in the config
+					iBranch = default.AutoPromotePresets[Index].squaddie;
+					break;
+			}
+		Unit.RankUpSoldier(UpdateState);
+		Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
+		Unit.BuySoldierProgressionAbility(UpdateState, i, iBranch); // i instead of iRank
+		// Unit.bRankedUp in this case can remain unassigned as the LevelUpBarracks command did everything but run BuySoldierProgression
+		// Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
+	}
+	Unit.StartingRank = newRank;
+	Unit.SetXPForRank(newRank);
+
 
 }
 
