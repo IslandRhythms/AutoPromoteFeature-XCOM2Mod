@@ -189,18 +189,17 @@ static function autoPromoteConsoleCommand(XComGameState_Unit Unit, XComGameState
 }
 
 // Like LevelUpBarracks but for a single soldier
-static function promoteSingleSoldier(XComGameState_Unit Unit, int newRank, XComGameState UpdateState) {
+static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComGameState UpdateState) {
 
 	local name soldierType;
 	local string soldierFullName;
-	local int Index, iRank, iBranch, RankUps, i;
+	local int Index, NewRank, iRank, iBranch, i;
 	local bool bIsLogged, bUseClassIfNoMatchedName;
 	
 	soldierType = Unit.GetSoldierClassTemplateName();
 	soldierFullName = Unit.GetFullName();
 
 	iRank = Unit.GetSoldierRank();
-	RankUps = newRank - iRank;
 	Index = default.AutoPromotePresets.find('soldierName', soldierFullName );
 
 	bIsLogged = `GETMCMVAR(ENABLELOGGING);
@@ -218,7 +217,8 @@ static function promoteSingleSoldier(XComGameState_Unit Unit, int newRank, XComG
 		return;
 	}
 	// check case where it is a rookie that got promoted from the LevelUpBarracks command
-	for (i = iRank; i < RankUps; i++) {
+	NewRank = iRank + RankUps;
+	for (i = iRank; i < NewRank; i++) {
 		switch(i) 
 			{
 				case 1: iBranch = default.AutoPromotePresets[Index].corporal;		break;
@@ -234,14 +234,14 @@ static function promoteSingleSoldier(XComGameState_Unit Unit, int newRank, XComG
 					iBranch = default.AutoPromotePresets[Index].squaddie;
 					break;
 			}
-		Unit.RankUpSoldier(UpdateState);
+		Unit.RankUpSoldier(UpdateState, soldierType);
 		Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
 		Unit.BuySoldierProgressionAbility(UpdateState, i, iBranch); // i instead of iRank
 		// Unit.bRankedUp in this case can remain unassigned as the LevelUpBarracks command did everything but run BuySoldierProgression
 		// Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
 	}
-	Unit.StartingRank = newRank;
-	Unit.SetXPForRank(newRank);
+	Unit.StartingRank = NewRank;
+	Unit.SetXPForRank(NewRank);
 
 
 }

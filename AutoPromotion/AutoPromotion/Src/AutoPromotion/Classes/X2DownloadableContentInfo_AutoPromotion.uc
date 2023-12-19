@@ -32,7 +32,7 @@ exec function PromoteAllSoldiers() {
 
 
 // use in conjunction with MakeSoldierAClass.
-exec function PromoteSoldier(string soldierName, optional int newRank = 1) {
+exec function PromoteSoldier(string soldierName, optional int rankUps = 1) {
 	local XComGameStateContext_ChangeContainer Container;
 	local XComGameState UpdateState;
 	local XComGameState_Unit Unit;
@@ -40,14 +40,18 @@ exec function PromoteSoldier(string soldierName, optional int newRank = 1) {
 
 	Container = class 'XComGameStateContext_ChangeContainer'.static.CreateEmptyChangeContainer("Soldier Auto-Promotion");
 	UpdateState = `XCOMHISTORY.CreateNewGameState(true, Container);
-
+	`LOG("soldierName"@soldierName);
 	for (i = 0; i < `XCOMHQ.Crew.Length; i++) {
 		Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', `XCOMHQ.Crew[i].ObjectID));
+		`LOG("==================================");
+		`LOG("Unit name is"@Unit.GetFullName());
+		`LOG(Unit.GetFullName() == soldierName);
+		`LOG("==================================");
 		if (Unit.GetFullName() == soldierName && Unit.IsAlive() && Unit.IsSoldier()) {
-			if (Unit.GetSoldierRank() >= newRank || newRank > class'X2ExperienceConfig'.static.GetMaxRank()) {
+			if ((Unit.GetSoldierRank() + rankUps) > class'X2ExperienceConfig'.static.GetMaxRank()) {
 				return;
 			}
-			class'AutoPromote'.static.promoteSingleSoldier(Unit, newRank, UpdateState);
+			class'AutoPromote'.static.promoteSingleSoldier(Unit, rankUps, UpdateState);
 		}
 	}
 	`GAMERULES.SubmitGameState(UpdateState);
