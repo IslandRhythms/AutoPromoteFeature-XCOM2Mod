@@ -9,7 +9,7 @@ static event OnLoadedSavedGame(){}
 static event InstallNewCampaign(XComGameState StartState){}
 
 // to be used after LevelUpBarracks
-exec function PromoteAllSoldiers() {
+exec function BuyBarracksAbilities() {
 	local int i;
 	local XComGameStateContext_ChangeContainer Container;
 	local XComGameState UpdateState;
@@ -21,7 +21,7 @@ exec function PromoteAllSoldiers() {
 		{
 			Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', `XCOMHQ.Crew[i].ObjectID));
 
-			if (Unit.IsAlive() && Unit.IsSoldier() && Unit.CanRankUpSoldier())
+			if (Unit.IsAlive() && Unit.IsSoldier())
 			{
 				class'AutoPromote'.static.autoPromoteConsoleCommand(Unit, UpdateState);
 			}
@@ -30,8 +30,27 @@ exec function PromoteAllSoldiers() {
 		`GAMERULES.SubmitGameState(UpdateState);
 }
 
+exec function PromoteAllSoldiers(optional int rankUps = 1, optional string className = "all") {
+	local XComGameStateContext_ChangeContainer Container;
+	local XComGameState UpdateState;
+	local XComGameState_Unit Unit;
+	local int i;
 
-// use in conjunction with MakeSoldierAClass.
+	Container = class 'XComGameStateContext_ChangeContainer'.static.CreateEmptyChangeContainer("Soldier Auto-Promotion");
+	UpdateState = `XCOMHISTORY.CreateNewGameState(true, Container);
+	for (i = 0; i < `XCOMHQ.Crew.Length; i++) {
+		Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', `XCOMHQ.Crew[i].ObjectID));
+		if (Unit.IsAlive() && Unit.IsSoldier()) {
+			if ((Unit.GetSoldierRank() + rankUps) > class'X2ExperienceConfig'.static.GetMaxRank()) {
+				continue;
+			}
+			class'AutoPromote'.static.promoteSingleSoldier(Unit, rankUps, UpdateState, className);
+		}
+	}
+	`GAMERULES.SubmitGameState(UpdateState);
+}
+
+
 exec function PromoteSoldier(string soldierName, optional int rankUps = 1) {
 	local XComGameStateContext_ChangeContainer Container;
 	local XComGameState UpdateState;
@@ -40,13 +59,8 @@ exec function PromoteSoldier(string soldierName, optional int rankUps = 1) {
 
 	Container = class 'XComGameStateContext_ChangeContainer'.static.CreateEmptyChangeContainer("Soldier Auto-Promotion");
 	UpdateState = `XCOMHISTORY.CreateNewGameState(true, Container);
-	`LOG("soldierName"@soldierName);
 	for (i = 0; i < `XCOMHQ.Crew.Length; i++) {
 		Unit = XComGameState_Unit(UpdateState.ModifyStateObject(class 'XComGameState_Unit', `XCOMHQ.Crew[i].ObjectID));
-		`LOG("==================================");
-		`LOG("Unit name is"@Unit.GetFullName());
-		`LOG(Unit.GetFullName() == soldierName);
-		`LOG("==================================");
 		if (Unit.GetFullName() == soldierName && Unit.IsAlive() && Unit.IsSoldier()) {
 			if ((Unit.GetSoldierRank() + rankUps) > class'X2ExperienceConfig'.static.GetMaxRank()) {
 				return;

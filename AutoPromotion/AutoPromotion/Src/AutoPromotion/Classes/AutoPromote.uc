@@ -181,22 +181,33 @@ static function autoPromoteConsoleCommand(XComGameState_Unit Unit, XComGameState
 					break;
 			}
 		Unit.BuySoldierProgressionAbility(UpdateState, i, iBranch); // i instead of iRank
-		// Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
-		// Unit.bRankedUp in this case can remain unassigned as the LevelUpBarracks command did everything but run BuySoldierProgression
+		Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
 		// Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
 	}
 
 }
 
-// Like LevelUpBarracks but for a single soldier
-static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComGameState UpdateState) {
+
+static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComGameState UpdateState, optional string className = "all") {
 
 	local name soldierType;
 	local string soldierFullName;
 	local int Index, NewRank, iRank, iBranch, i;
 	local bool bIsLogged, bUseClassIfNoMatchedName;
+	local XComGameState_HeadquartersXCom XComHQ;
 	
 	soldierType = Unit.GetSoldierClassTemplateName();
+	// allow selecting a specific class to auto promote
+	`LOG("=============================");
+	`LOG("What is className"@className);
+	`LOG("what is soldierType"@soldierType);
+	`LOG(className != "all" && string(soldierType) != className);
+	`LOG("=============================");
+	// Issue is className is sometimes blank and that evaluates to true
+	if (className != "all" && string(soldierType) != className) {
+		return;
+	}
+
 	soldierFullName = Unit.GetFullName();
 
 	iRank = Unit.GetSoldierRank();
@@ -219,6 +230,16 @@ static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComG
 	// check case where it is a rookie that got promoted from the LevelUpBarracks command
 	NewRank = iRank + RankUps;
 	for (i = iRank; i < NewRank; i++) {
+	if (iRank == 0) {
+		XComHQ = XComGameState_HeadquartersXCom(`XCOMHISTORY.GetSingleGameStateObjectForClass(class'XComGameState_HeadquartersXCom'));
+		XComHQ = XComGameState_HeadquartersXCom(UpdateState.ModifyStateObject(class'XComGameState_HeadquartersXCom', XComHQ.ObjectID));
+		soldierType = XComHQ.SelectNextSoldierClass();
+		Unit.RankUpSoldier(UpdateState, soldierType);
+		Unit.bRankedUp = false;
+		Unit.ApplySquaddieLoadout(UpdateState, XComHQ);
+		Unit.ApplyBestGearLoadout(UpdateState); // Make sure the squaddie has the best gear available
+		continue; // soldier is now a squaddie for whatever class
+	}
 		switch(i) 
 			{
 				case 1: iBranch = default.AutoPromotePresets[Index].corporal;		break;
@@ -237,12 +258,9 @@ static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComG
 		Unit.RankUpSoldier(UpdateState, soldierType);
 		Unit.bRankedUp = false;									// this needs to be set false after a rankupsoldier so the NEXT CanRankUpSoldier can be valid!
 		Unit.BuySoldierProgressionAbility(UpdateState, i, iBranch); // i instead of iRank
-		// Unit.bRankedUp in this case can remain unassigned as the LevelUpBarracks command did everything but run BuySoldierProgression
 		// Unit.bNeedsNewClassPopup = bShowRankedUpPopups;	// makes the rank/class pop-up NOT come up and spam
 	}
 	Unit.StartingRank = NewRank;
 	Unit.SetXPForRank(NewRank);
-
-
 }
 
