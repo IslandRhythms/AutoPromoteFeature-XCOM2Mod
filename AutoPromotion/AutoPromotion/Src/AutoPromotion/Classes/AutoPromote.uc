@@ -188,7 +188,7 @@ static function autoPromoteConsoleCommand(XComGameState_Unit Unit, XComGameState
 }
 
 
-static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComGameState UpdateState, optional string className = "all") {
+static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComGameState UpdateState, optional name className = '') {
 
 	local name soldierType;
 	local string soldierFullName;
@@ -197,14 +197,7 @@ static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComG
 	local XComGameState_HeadquartersXCom XComHQ;
 	
 	soldierType = Unit.GetSoldierClassTemplateName();
-	// allow selecting a specific class to auto promote
-	`LOG("=============================");
-	`LOG("What is className"@className);
-	`LOG("what is soldierType"@soldierType);
-	`LOG(className != "all" && string(soldierType) != className);
-	`LOG("=============================");
-	// Issue is className is sometimes blank and that evaluates to true
-	if (className != "all" && string(soldierType) != className) {
+	if (className != '' && soldierType!= className) {
 		return;
 	}
 
@@ -230,7 +223,7 @@ static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComG
 	// check case where it is a rookie that got promoted from the LevelUpBarracks command
 	NewRank = iRank + RankUps;
 	for (i = iRank; i < NewRank; i++) {
-	if (iRank == 0) {
+	if (i == 0) {
 		XComHQ = XComGameState_HeadquartersXCom(`XCOMHISTORY.GetSingleGameStateObjectForClass(class'XComGameState_HeadquartersXCom'));
 		XComHQ = XComGameState_HeadquartersXCom(UpdateState.ModifyStateObject(class'XComGameState_HeadquartersXCom', XComHQ.ObjectID));
 		soldierType = XComHQ.SelectNextSoldierClass();

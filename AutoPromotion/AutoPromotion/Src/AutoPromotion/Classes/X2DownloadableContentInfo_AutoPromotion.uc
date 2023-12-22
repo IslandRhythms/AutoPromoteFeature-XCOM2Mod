@@ -30,7 +30,8 @@ exec function BuyBarracksAbilities() {
 		`GAMERULES.SubmitGameState(UpdateState);
 }
 
-exec function PromoteAllSoldiers(optional int rankUps = 1, optional string className = "all") {
+// skips the need to call LevelUpBarracks and allows for filtering
+exec function PromoteAllSoldiers(optional int rankUps = 1, optional name className = '') {
 	local XComGameStateContext_ChangeContainer Container;
 	local XComGameState UpdateState;
 	local XComGameState_Unit Unit;
@@ -50,7 +51,7 @@ exec function PromoteAllSoldiers(optional int rankUps = 1, optional string class
 	`GAMERULES.SubmitGameState(UpdateState);
 }
 
-
+// If you don't care what the unit becomes, call this. If you do, call MakeSoldierAClass and then this.
 exec function PromoteSoldier(string soldierName, optional int rankUps = 1) {
 	local XComGameStateContext_ChangeContainer Container;
 	local XComGameState UpdateState;
