@@ -38,14 +38,28 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 	local XComGameState_HeadquartersXCom XHQ;
 	local array<AutoPromote_RandomEntries> Options;
 	local AutoPromote_RandomEntries Entry;
+
+	bIsLogged = `GETMCMVAR(ENABLELOGGING);
 	
 	soldierType = Unit.GetSoldierClassTemplateName();
 	soldierFullName = Unit.GetFullName();
-
+	
 	iRank = Unit.GetSoldierRank();
-	Index = default.AutoPromotePresets.find('soldierName', soldierFullName );
+	Index = -1;
+	Index = -1;
+	for (i = 0; i < default.AutoPromotePresets.Length; i++) {
+		`LOG("Comparing soldierFullName=[" $ soldierFullName $ "] with preset[" $ i $ "] soldierName=[" $ default.AutoPromotePresets[i].soldierName $ "]", bIsLogged, 'Beat_AutoPromote');
+    
+		if (soldierFullName == default.AutoPromotePresets[i].soldierName) {
+			`LOG("MATCH FOUND at index [" $ i $ "]", bIsLogged, 'Beat_AutoPromote');
+			Index = i;
+			break;
+		} else {
+			`LOG("NO MATCH at index [" $ i $ "]", bIsLogged, 'Beat_AutoPromote');
+		}
+	}
 
-	bIsLogged = `GETMCMVAR(ENABLELOGGING);
+	
 	bUseClassIfNoMatchedName = `GETMCMVAR(USENAME);
 	bShowRankedUpPopups = `GETMCMVAR(SHOWPROMOTIONPOPUP);
 	bOnlySquaddies = `GETMCMVAR(ONLYSQUADDIES);
@@ -54,20 +68,24 @@ static function autoPromote(XComGameState_Unit Unit, XComGameState UpdateState)
 	`LOG("what is bShowRankedUpPopups"@bShowRankedUpPopups, bIsLogged, 'Beat_AutoPromote');
 	`Log("what is bOnlySquaddies"@bOnlySquaddies, bIsLogged, 'Beat_AutoPromote');
 
-	//not a named unit, so go by class
-	if (Index == INDEX_NONE && bUseClassIfNoMatchedName)
+	if (Index == INDEX_NONE)
 	{
-		Index = default.AutoPromotePresets.find('soldierClass', soldierType);
-	}
-	else
-	{
-		`LOG("No Named match for unit [" @soldierFullName @"], AND Use Class auto-match turned off", bIsLogged, 'Beat_AutoPromote');
-		`LOG("SKIPPED AUTO-PROMOTION", bIsLogged, 'Beat_AutoPromote');
-		return;
+		// not a named unit, so go by class
+		// very strange that this works but using find to find the soldier name did not.
+		if (bUseClassIfNoMatchedName)
+		{
+			`LOG("No named match for unit [" @ soldierFullName @ "], defaulting to class preset defined in the ini.", bIsLogged, 'Beat_AutoPromote');
+			Index = default.AutoPromotePresets.find('soldierClass', soldierType);
+		}
+		else
+		{
+			`LOG("No named match for unit [" @ soldierFullName @ "], and Use Class auto-match is turned off. Skipping auto-promotion.", bIsLogged, 'Beat_AutoPromote');
+			return;
+		}
 	}
 
 	// The soldier's class/name has a preset, continue on to autopromote it
-	//INDEX_NONE == -1 , these are the same so removed the &&
+	// INDEX_NONE == -1 , these are the same so removed the &&
 	if (Index != INDEX_NONE && !`GETMCMVAR(BUYRANDOM))
 	{
 		switch(iRank) 
@@ -147,21 +165,31 @@ static function autoPromoteConsoleCommand(XComGameState_Unit Unit, XComGameState
 	soldierFullName = Unit.GetFullName();
 
 	iRank = Unit.GetSoldierRank();
-	Index = default.AutoPromotePresets.find('soldierName', soldierFullName );
+	Index = -1;
+	for (i = 0; i < default.AutoPromotePresets.Length; i++) {
+		if (soldierFullName == default.AutoPromotePresets[i].soldierName) {
+			Index = i;
+			break;
+		}
+	}
 
 	bIsLogged = `GETMCMVAR(ENABLELOGGING);
 	bUseClassIfNoMatchedName = `GETMCMVAR(USENAME);
 
-	//not a named unit, so go by class
-	if (Index == INDEX_NONE && bUseClassIfNoMatchedName)
+	if (Index == INDEX_NONE)
 	{
-		Index = default.AutoPromotePresets.find('soldierClass', soldierType);
-	}
-	else
-	{
-		`LOG("No Named match for unit [" @soldierFullName @"], AND Use Class auto-match turned off", bIsLogged, 'Beat_AutoPromote');
-		`LOG("SKIPPED AUTO-PROMOTION", bIsLogged, 'Beat_AutoPromote');
-		return;
+		// not a named unit, so go by class
+		// very strange that this works but using find to find the soldier name did not.
+		if (bUseClassIfNoMatchedName)
+		{
+			`LOG("No named match for unit [" @ soldierFullName @ "], defaulting to class preset defined in the ini.", bIsLogged, 'Beat_AutoPromote');
+			Index = default.AutoPromotePresets.find('soldierClass', soldierType);
+		}
+		else
+		{
+			`LOG("No named match for unit [" @ soldierFullName @ "], and Use Class auto-match is turned off. Skipping auto-promotion.", bIsLogged, 'Beat_AutoPromote');
+			return;
+		}
 	}
 	// check case where it is a rookie that got promoted from the LevelUpBarracks command
 	for (i = 0; i < iRank; i++) {
@@ -201,24 +229,34 @@ static function promoteSingleSoldier(XComGameState_Unit Unit, int RankUps, XComG
 		return;
 	}
 
-	soldierFullName = Unit.GetFullName();
 
 	iRank = Unit.GetSoldierRank();
-	Index = default.AutoPromotePresets.find('soldierName', soldierFullName );
+	soldierFullName = Unit.GetFullName();
+	Index = -1;
+	for (i = 0; i < default.AutoPromotePresets.Length; i++) {
+		if (soldierFullName == default.AutoPromotePresets[i].soldierName) {
+			Index = i;
+			break;
+		}
+	}
 
 	bIsLogged = `GETMCMVAR(ENABLELOGGING);
 	bUseClassIfNoMatchedName = `GETMCMVAR(USENAME);
 
-	//not a named unit, so go by class
-	if (Index == INDEX_NONE && bUseClassIfNoMatchedName)
+	if (Index == INDEX_NONE)
 	{
-		Index = default.AutoPromotePresets.find('soldierClass', soldierType);
-	}
-	else
-	{
-		`LOG("No Named match for unit [" @soldierFullName @"], AND Use Class auto-match turned off", bIsLogged, 'Beat_AutoPromote');
-		`LOG("SKIPPED AUTO-PROMOTION", bIsLogged, 'Beat_AutoPromote');
-		return;
+		// not a named unit, so go by class
+		// very strange that this works but using find to find the soldier name did not.
+		if (bUseClassIfNoMatchedName)
+		{
+			`LOG("No named match for unit [" @ soldierFullName @ "], defaulting to class preset defined in the ini.", bIsLogged, 'Beat_AutoPromote');
+			Index = default.AutoPromotePresets.find('soldierClass', soldierType);
+		}
+		else
+		{
+			`LOG("No named match for unit [" @ soldierFullName @ "], and Use Class auto-match is turned off. Skipping auto-promotion.", bIsLogged, 'Beat_AutoPromote');
+			return;
+		}
 	}
 	// check case where it is a rookie that got promoted from the LevelUpBarracks command
 	NewRank = iRank + RankUps;
